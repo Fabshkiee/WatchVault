@@ -1,39 +1,31 @@
 <?php
-/**
- * Database Connection Configuration
- * WatchVault - XAMPP MySQL Connection
- */
+// php/config/db_connect.php
 
-// Database configuration
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', ''); // Default XAMPP password is empty
-define('DB_NAME', 'watchvault'); //Database name
+// Error reporting for development
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+error_reporting(E_ALL);
 
 function getDBConnection() {
-    static $conn = null;
+    $host = 'localhost';
+    $username = 'root';
+    $password = '';
+    $database = 'watchvault';
     
-    if ($conn === null) {
-        $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-        if ($conn->connect_error) {
-            error_log("Database connection failed: " . $conn->connect_error);
-            return false;
-        }
-        $conn->set_charset("utf8mb4");
+    $conn = new mysqli($host, $username, $password, $database);
+    
+    if ($conn->connect_error) {
+        error_log("Database connection failed: " . $conn->connect_error);
+        return null;
     }
+    
+    $conn->set_charset("utf8mb4");
     return $conn;
 }
 
-/**
- * Close database connection
- */
-function closeDBConnection() {
-    global $conn;
-    if ($conn !== null) {
+function closeDBConnection($conn) {
+    if ($conn) {
         $conn->close();
-        $conn = null;
     }
 }
-
 ?>
-

@@ -1,0 +1,466 @@
+/* Media Details Modal Overlay */
+#media-details-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 1000;
+  display: none;
+  overflow-y: auto;
+}
+
+#media-details-container.active {
+  display: block;
+}
+
+.media-details-modal {
+  background: transparent;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Close Button */
+.modal-close-btn {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+  color: white;
+}
+
+.modal-close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.modal-close-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Backdrop Image*/
+.media-backdrop {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Content Container */
+.media-details-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 2.5rem;
+  background: linear-gradient(to bottom, transparent 0%, rgba(28, 23, 43, 0.98) 10%, rgba(28, 23, 43, 1) 20%);
+  margin-top: -150px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Title Section */
+.media-title-section {
+  margin-bottom: 1.5rem;
+}
+
+.media-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: white;
+  line-height: 1.1;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+  margin-bottom: 1rem;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* Meta Info */
+.media-meta-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.media-rating-badge {
+  background: transparent;
+  color: #FFD700;
+  padding: 0;
+  border-radius: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: none;
+}
+
+.media-rating-badge svg {
+  width: 18px;
+  height: 18px;
+}
+
+.media-year {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9375rem;
+  font-weight: 400;
+}
+
+/* Genre Tags */
+.media-genres {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.genre-tag {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0;
+  border-radius: 0;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  border: none;
+}
+
+.genre-tag:not(:last-child)::after {
+  content: "•";
+  margin-left: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Description */
+.media-description {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  max-width: 700px;
+}
+
+/* Action Section */
+.media-actions-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Media Actions Buttons Container */
+.media-actions-buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  max-width: 300px;
+}
+
+/* Watchlist Status Dropdown */
+.watchlist-status-dropdown {
+  position: relative;
+  max-width: 300px;
+}
+
+.status-dropdown-btn {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.875rem 1rem;
+  color: white;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+}
+
+.status-dropdown-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.status-dropdown-btn svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s ease;
+}
+
+.status-dropdown-btn.active svg {
+  transform: rotate(180deg);
+}
+
+.status-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  right: 0;
+  background: rgba(38, 25, 52, 0.98);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  z-index: 10;
+  display: none;
+}
+
+.status-dropdown-menu.active {
+  display: block;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.status-option {
+  padding: 0.875rem 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9375rem;
+}
+
+.status-option:hover {
+  background: rgba(165, 70, 255, 0.15);
+  color: white;
+}
+
+.status-option.selected {
+  background: rgba(165, 70, 255, 0.25);
+  color: #a546ff;
+  font-weight: 600;
+}
+
+/* Finished Status Accordion */
+.finished-status-section {
+  display: none;
+}
+
+.finished-status-section.active {
+  display: block;
+  animation: expandDown 0.3s ease;
+}
+
+@keyframes expandDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 500px;
+  }
+}
+
+/* Rating Section */
+.rating-section {
+  margin-bottom: 1.5rem;
+}
+
+.rating-label {
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.star-rating {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.star {
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.star:hover,
+.star.active {
+  color: #a546ff;
+  transform: scale(1.1);
+}
+
+.star.active {
+  filter: drop-shadow(0 0 8px rgba(165, 70, 255, 0.6));
+}
+
+/* Review Section */
+.review-section {
+  margin-bottom: 1.5rem;
+}
+
+.review-label {
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.review-textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.875rem 1rem;
+  color: white;
+  font-size: 0.9375rem;
+  font-family: 'Inter', sans-serif;
+  resize: vertical;
+  min-height: 100px;
+  transition: all 0.3s ease;
+}
+
+.review-textarea::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.review-textarea:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(165, 70, 255, 0.5);
+  box-shadow: 0 0 0 3px rgba(165, 70, 255, 0.1);
+}
+
+/* Add to My List Button */
+.add-to-list-btn {
+  background: linear-gradient(135deg, #a546ff, #c88cff);
+  color: white;
+  border: none;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(165, 70, 255, 0.3);
+  flex: 1;
+}
+
+.add-to-list-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(165, 70, 255, 0.5);
+}
+
+.add-to-list-btn:active {
+  transform: translateY(0);
+}
+
+/* Delete Button in Modal*/
+.delete-from-modal-btn {
+  width: 56px;
+  height: 56px;
+  margin-top: 0.2rem;
+  border-radius: 10rem;
+  background: rgba(244, 67, 54, 0.95);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(244, 67, 54, 0.4);
+  flex-shrink: 0;
+}
+
+.delete-from-modal-btn:hover {
+  background: rgb(244, 67, 54);
+  transform: scale(1.05);
+  box-shadow: 0 6px 25px rgba(244, 67, 54, 0.6);
+}
+
+.delete-from-modal-btn svg {
+  width: 24px;
+  height: 24px;
+  color: white;
+}
+
+/* Recommendations - HIDDEN */
+.media-recommendations {
+  display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .media-backdrop {
+    height: 400px;
+  }
+
+  .media-details-content {
+    padding: 1.5rem;
+    margin-top: -100px;
+  }
+
+  .media-title {
+    font-size: 2.5rem;
+  }
+
+  .watchlist-status-dropdown,
+  .add-to-list-btn {
+    max-width: 100%;
+  }
+
+  .media-actions-buttons {
+    max-width: 100%;
+    flex-direction: column;
+  }
+  
+  .delete-from-modal-btn {
+    width: 100%;
+    height: 50px;
+    border-radius: 0.5rem;
+  }
+}
+
+/* Scrollbar Styling */
+#media-details-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+#media-details-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+#media-details-container::-webkit-scrollbar-thumb {
+  background: rgba(165, 70, 255, 0.5);
+  border-radius: 4px;
+}
+
+#media-details-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(165, 70, 255, 0.7);
+}

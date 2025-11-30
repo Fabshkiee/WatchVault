@@ -1,0 +1,148 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Filmstrip Scrolling Animation */
+.hero {
+    height: 100vh;
+    width: 100%;
+    background-image: url(../../assets/landingpage.png);
+    background-repeat: repeat-x;     
+    background-size: cover;           
+    background-position: 0 0;
+    position: relative;
+    animation: filmScroll 40s linear infinite;
+}
+
+@keyframes filmScroll {
+    0%   { background-position: 0 0; }
+    100% { background-position: -2000px 0; } 
+}
+
+
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+}
+
+.top-bar {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 20px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    width: 250px;
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.language {
+    padding: 7px 10px;
+    font-size: 14px;
+    background: transparent;
+    color: white;
+    border: 1px solid gray;
+    border-radius: 4px;
+}
+
+.language option {
+    color: black;
+}
+
+.signin {
+    display: inline-block; 
+    background: hsl(267, 72%, 59%);
+    border: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+    color: white;
+    font-size: 15px;
+    text-decoration: none; 
+    cursor: pointer;
+}
+
+.center-box {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    width: 90%;
+    max-width: 850px;
+}
+
+.center-box h1 {
+    align-self: center;
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    width: 880px;
+}
+
+.center-box h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.center-box p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.email-box {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    gap: 0;
+}
+
+.email-box input {
+    padding: 15px;
+    width: 350px;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+}
+
+.email-box a {
+    background: hsl(267, 72%, 59%);
+    border: none;
+    padding: 15px 25px;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: inline-block;
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+
+    .center-box h1 {
+        font-size: 2rem;
+    }
+
+    .email-box {
+        flex-direction: column;
+        width: 100%;
+        padding: 0 20px
+    }
+
+}
