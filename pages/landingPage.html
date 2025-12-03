@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WatchVault Background</title>
+  <style>
+    body, html {
+      margin: 0;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: 
+        radial-gradient(ellipse at center, rgba(76, 29, 149, 0.55) 0%, transparent 65%),
+        #0d0619;
+    }
+
+    /* Title and Slogan */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;            /* space between icon and text */
+      margin-bottom: 2px;
+    }
+
+    .title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      color: white;
+      padding-top: 70px;
+      padding-bottom: 0px;
+      font-size: 30px;
+      line-height: 40%;
+      margin-bottom: 0%;
+    }
+
+    .title h1 {
+      font-size: 65px;
+    }
+
+    p {
+      margin: 8px 0 0 0;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      color: gray;
+      font-size: 18px;
+      font-weight:500;
+      margin-top: 0%;
+      margin-bottom: 3%;
+    }
+    
+    .title img {
+      width: 50px;
+      height: 50px;
+    }
+
+    .Slogan h1 {
+      text-align: center;
+      justify-content: center;
+      font-size: 60px;
+      color: white;
+      margin: 0;
+      margin-top: 0%;
+      margin-bottom: 0%;
+    }
+
+    .Slogan2 h1 {
+      color: #7F00FF;
+      font-size: 60px;
+      margin: 0;
+      margin-bottom: 1%;
+      margin-top: 0%;
+      text-align: center;
+    }
+
+    .Slogan p {
+      color: gray;
+      font-size: 20px;
+      text-align: center;
+      margin-top: 0%;
+    }
+
+    /* Buttons */
+    .Buttons  {
+      gap: 60px;
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .Buttons a {
+      height: 40px;
+      padding: 10px 30px;
+      background-color: #7F00FF;
+      color: white;
+      border: none;
+      font-size: 15px;
+      font-weight: bold;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.3s;
+      text-decoration: none;
+    }
+
+    .Buttons a:hover {
+      background-color: #5e00cc;
+      transform: translateY(-8px);
+    }
+
+    .Buttons .b2 a {
+      background-color: transparent;
+      border: 2px solid #7F00FF;
+    }
+
+    .Buttons .b2 a:hover {
+      background-color: #5e00cc;
+      transform: translateY(-8px);
+    }
+
+    /* Cards Section */
+    .cards {
+      justify-content: center;
+      display: flex;
+      gap: 40px; 
+      padding: 40px;
+    }
+
+    .card {
+      background-color: transparent;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      border-radius: 20px;
+      padding: 32px 24px;
+      width: 200px;
+      text-align: center;
+      margin-top: 25px;
+      transition: transform 0.3s;
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.25),
+        0 0 20px rgba(0, 0, 0, 0.1) inset;
+    }
+
+    .card:hover {
+        transform: translateY(-12px);
+        box-shadow: 
+            0 24px 48px rgba(127, 0, 255, 0.4),
+            0 0 30px rgba(139, 92, 246, 0.2) inset;
+    }
+
+    .cards .icon {
+      font-size: 48px;
+      color: #7F00FF;
+      margin-bottom: 16px;
+    }
+
+    .cards h3 {
+      color: white;
+      margin-top: 16px;
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+
+    .cards p {
+      color: gray;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+  </style>
+</head>
+<body>
+  <div class = "title">
+    <img src="Vector.png" alt="logo">
+    <h1>WatchVault</h1>
+  </div>
+
+  <p>Your Personal Media Tracker</p>
+
+  <div class = "Slogan">
+    <h1>Track. Discover.</h1>
+  </div>  
+    <div class = "Slogan2">
+      <h1>Your Personal Vault</h1>
+      <p>Never lose track of your favorite movies, TV shows, and anime again. Rate, <br>
+        review, and curate your perfect watchlist in one beautiful place.</p>
+    </div>
+
+  <div class = "Buttons">
+    <div class = "b1">
+      <a href="register.php">Get Started</a>
+    </div>
+    <div class = "b2">
+      <a href="login.php">Sign In</a>
+    </div>  
+  </div>
+
+  <div class="cards">
+    <!-- Card 1 -->
+    <div class="card">
+      <div class="icon"><img src="star.png"></div>
+      <h3>Rate and Review</h3>
+      <p>Share your thoughts and rate everything you watch with a sleek, intuitive interface</p>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="card">
+      <div class="icon"><img src="graphup.png"></div>
+      <h3>Track Progress</h3>
+      <p>Organize your watchlist by status and never forget what you're currently watching</p>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="card">
+      <div class="icon"><img src="vault.png"></div>
+      <h3>Personal Vault</h3>
+      <p>Build your perfect collection with movies, TV shows, and anime all in one place</p>
+    </div>
+  </div>
+
+ <script>
+        function redirectToPage(url) {
+            // Check if a valid URL was selected (not the placeholder)
+            if (url) { 
+                window.location.href = url;
+            }
+        }
+  </script>
+
+</body>
+</html>
