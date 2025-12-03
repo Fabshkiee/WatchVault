@@ -1,0 +1,310 @@
+/* WatchVault - Global CSS */
+/* CSS Variables, Resets, Typography, and Shared Components */
+
+/* ============================================
+   CSS Variables - Design System
+   ============================================ */
+:root {
+  /* WatchVault Purple Night Theme */
+  --background: hsl(255, 31%, 13%);
+  --foreground: hsl(240, 11%, 97%);
+  --card: hsl(255, 31%, 18%);
+  --card-foreground: hsl(240, 11%, 97%);
+  --primary: hsl(267, 72%, 59%);
+  --primary-foreground: hsl(240, 11%, 97%);
+  --secondary: hsl(267, 20%, 73%);
+  --secondary-foreground: hsl(255, 31%, 13%);
+  --muted: hsl(255, 31%, 20%);
+  --muted-foreground: hsl(267, 20%, 73%);
+  --accent: hsl(270, 92%, 58%);
+  --accent-foreground: hsl(240, 11%, 97%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(240, 11%, 97%);
+  --border: hsl(255, 31%, 25%);
+  --input: hsl(255, 31%, 20%);
+  --ring: hsl(267, 72%, 59%);
+  --radius: 1rem;
+  
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, hsl(270, 92%, 58%), hsl(323, 88%, 49%));
+  --gradient-card: linear-gradient(145deg, hsla(255, 31%, 18%, 0.8), hsla(267, 72%, 20%, 0.6));
+  
+  /* Glass effect */
+  --glass-bg: hsla(255, 31%, 18%, 0.4);
+  --glass-border: hsla(267, 72%, 59%, 0.2);
+  
+  /* Glow effects */
+  --glow-primary: 0 0 20px hsla(267, 72%, 59%, 0.4);
+  --glow-accent: 0 0 30px hsla(323, 88%, 49%, 0.3);
+  
+  /* Transitions */
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   Base Styles & Resets
+   ============================================ */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(180deg, #1C172B 0%, #2C1C40 50%, #261934 100%);
+  background-attachment: fixed;
+  color: hsl(var(--foreground));
+  min-height: 100vh;
+}
+
+/* ============================================
+   Layout Components
+   ============================================ */
+.page-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ============================================
+   Header & Navigation (Shared)
+   ============================================ */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 1px 9px 31.4px rgba(0, 0, 0, 0.37);
+  border: 1px solid rgba(179, 156, 255, 0.367);
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(to bottom right, rgb(147, 51, 234), rgb(107, 33, 168));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+.logo-text {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: white;
+}
+
+.user-avatar {
+  width: 2.5rem; 
+  height: 2.5rem;
+  border-radius: 50%;
+  position: relative;
+  background: hsla(255, 31%, 25%, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); 
+  box-shadow: 1px 9px 31px rgba(0, 0, 0, 0.37);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white; 
+  transition: var(--transition-smooth);
+}
+
+
+.user-avatar::before {
+  content: "";
+  position: absolute;
+  inset: 0; 
+  border-radius: 50%; 
+  padding: 1.5px;
+  background: linear-gradient(135deg, #BFAAFF 0%, #594597 100%);
+  mask: 
+     linear-gradient(#fff 0 0) content-box, 
+     linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.user-avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 
+      1px 9px 31px rgba(0, 0, 0, 0.37),
+      0 0 15px rgba(191, 170, 255, 0.6); 
+}
+
+.user-avatar svg {
+  width: 20px;
+  height: 20px;
+}
+
+.header-search-container {
+  flex: 1;
+  max-width: 500px;
+  margin: 0 2rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.header-search-icon {
+  position: absolute;
+  left: 1rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: hsl(var(--muted-foreground));
+  pointer-events: none;
+  z-index: 1;
+}
+
+.header-search-input {
+  width: 100%;
+  padding: 0.625rem 1rem 0.625rem 2.75rem;
+  border-radius: 0.5rem;
+  background-color: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+  font-size: 0.875rem;
+  transition: var(--transition-smooth);
+}
+
+.header-search-input::placeholder {
+  color: hsl(var(--muted-foreground));
+}
+
+.header-search-input:focus {
+  outline: none;
+  border-color: hsl(var(--ring));
+  box-shadow: 0 0 0 2px hsl(var(--ring) / 0.2);
+}
+
+@media (max-width: 768px) {
+  .header-search-container {
+    max-width: 200px;
+    margin: 0 1rem;
+  }
+  
+  .header-search-input {
+    font-size: 0.8125rem;
+    padding: 0.5rem 0.75rem 0.5rem 2.25rem;
+  }
+}
+
+/* ============================================
+   Glass Card Component (Shared) future pani
+   ============================================ */
+.glass-card {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background-color: hsl(var(--card) / 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+}
+
+/* ============================================
+   Button Components (Shared)
+   ============================================ */
+.btn-primary {
+  background: var(--gradient-primary);
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  font-size: 1rem;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: var(--glow-primary);
+}
+
+.btn-full {
+  width: 100%;
+}
+
+.glow-button {
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition-smooth);
+}
+
+.glow-button:hover {
+  box-shadow: var(--glow-primary);
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   Filter Buttons (Shared)
+   ============================================ */
+.filter-group {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.filter-button {
+  padding: 0.5rem 1.5rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid transparent; 
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  background-color: transparent;
+  color: var(--secondary);
+}
+
+.filter-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.filter-button.active {
+  background-color: transparent;
+  border-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+  color: var(--primary);
+  position: relative;
+  z-index: 1;
+}
+
+
