@@ -103,10 +103,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link rel="stylesheet" href="../css/pages/login.css" />
 </head>
 <body>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
 
-  <div class="film-container">
-    <div class="film-strip left"></div>
-    <div class="film-strip right"></div>
+<div class="film-container">
+    <div class="film-wrapper top-left-wrapper">
+        <div class="film-strip"></div>
+    </div>
+    
+    <div class="film-wrapper bottom-right-wrapper">
+        <div class="film-strip delayed"></div>
+    </div>
   </div>
 
   <div class="overlay"></div>

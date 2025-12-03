@@ -88,35 +88,51 @@ body {
 }
 
 .film-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: 1;
-  pointer-events: none;
-}
+      overflow: hidden; /* Ensure strips don't cause scrollbars */
+    }
 
-.film-strip {
-  position: absolute;
-  width: 400px;
-  height: 400%;
-  background: url(../../assets/figmastrips.png) repeat-y;
-  background-size: 100% auto;
-  opacity: 0.45;
-  animation: scrollFilm 30s linear infinite;
-}
+    /* Wrapper handles the rotation and position */
+    .film-wrapper {
+        position: absolute;
+        width: 500px; /* Width of the strip image */
+        height: 130%; /* Make it long enough to cross the screen */
+        z-index: 1;
+        pointer-events: none;
+    }
 
-.film-strip.left {
-  left: 1%;
-}
-.film-strip.right {
-  right: 1%;
-  animation-delay: -15s;
-}
+    /* Top Left - Rotated 35deg */
+    .top-left-wrapper {
+        top: -45%;
+        left: -10%;
+        transform: rotate(35deg);
+        transform-origin: center;
+    }
+
+    /* Bottom Right - Rotated 35deg */
+    .bottom-right-wrapper {
+        bottom: -45%;
+        right: -10%;
+        transform: rotate(35deg);
+        transform-origin: center;
+    }
+
+    /* The inner strip handles the infinite scrolling animation */
+    /* Since the parent is rotated, scrolling Y moves it diagonally */
+    .film-strip {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 400%; /* Very long to allow scrolling */
+        background: url(../../assets/figmastrips.png) repeat-y;
+        background-size: 100% auto;
+        opacity: 0.45;
+        animation: scrollFilm 40s linear infinite; /* Slightly slower for elegance */
+    }
+    
+    .delayed {
+        animation-delay: -20s;
+    }
 
 @keyframes scrollFilm {
   0% {
@@ -166,7 +182,7 @@ body {
 .logo {
   width: 62px;
   height: 62px;
-  background: var(--gradient-primary);
+  background: var(--primary);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -177,7 +193,7 @@ body {
 }
 
 h1 {
-  color: var(--primary-foreground);
+  color: var(--primary);
   margin: 0 0 28px;
   font-size: 28px;
   font-weight: 700;
@@ -223,7 +239,7 @@ input:focus {
   padding: 14px;
   border: none;
   border-radius: 10px;
-  background: var(--gradient-primary);
+  background: var(--primary);
   color: var(--primary-foreground);
   font-size: 16px;
   font-weight: 600;
@@ -250,4 +266,41 @@ input:focus {
 }
 .signup a:hover {
   text-decoration: underline;
+}
+
+/* Pulsing Orb Animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(64px);
+  pointer-events: none;
+  z-index: -1;
+  background-color: hsl(270, 92%, 58%, 0.3);
+  animation: pulse 3.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.orb-1 {
+  width: 28rem;
+  height: 25rem;
+  top: 55%;
+  left: 35%;
+  transform: translate(-50%, -50%);
+}
+
+.orb-2 {
+  width: 28rem;
+  height: 25rem;
+  top: 40%;
+  right: 35%;
+  transform: translate(50%, -50%);
+  animation-delay: 1s;
 }
