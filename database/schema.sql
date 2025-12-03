@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS watchlist (
     release_date DATE,
     media_type ENUM('movie', 'tv') NOT NULL DEFAULT 'movie',
     status ENUM('watching', 'wantToWatch', 'finished') NOT NULL DEFAULT 'wantToWatch',
-    user_rating DECIMAL(2,1) DEFAULT NULL,
+    user_rating DECIMAL(3,1) DEFAULT NULL,
     user_review TEXT,
     added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

@@ -89,6 +89,7 @@ body {
   -webkit-backdrop-filter: blur(8px);
   box-shadow: 1px 9px 31.4px rgba(0, 0, 0, 0.37);
   border: 1px solid rgba(179, 156, 255, 0.367);
+  background-color: rgba(23, 18, 40, 0.6) ;
 }
 
 .header-container {

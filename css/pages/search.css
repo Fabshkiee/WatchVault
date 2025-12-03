@@ -1,0 +1,21 @@
+.back-link {
+          display: inline-flex;
+          align-items: center;
+          color: var(--secondary);
+          text-decoration: none;
+          margin-bottom: 20px;
+          font-weight: 500;
+          transition: var(--transition-smooth);
+      }
+.back-link:hover { 
+    color: var(--primary); transform: translateX(-5px); 
+}
+
+.search-page-hero { 
+    padding-top: 2rem; 
+}
+
+p.search-results-subtitle {
+  color: var(--foreground-muted);
+  font-size: 1rem;
+}
