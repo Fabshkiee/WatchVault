@@ -32,10 +32,10 @@
 
   <div class = "Buttons">
     <div class = "b1">
-      <button>Get Started</button>
+      <button onclick="window.location.href='login.php?action=register'">Get Started</button>
     </div>
     <div class = "b2">
-      <button>Sign in</button>
+      <button onclick="window.location.href='login.php'">Sign in</button>
     </div>  
   </div>
 

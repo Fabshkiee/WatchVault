@@ -10,7 +10,9 @@ if (isset($_SESSION['user_id'])) {
 
 $error = '';
 $success = '';
-$action_mode = 'login'; // Default view
+
+// Check GET request for action (allows linking to register mode directly)
+$action_mode = isset($_GET['action']) && $_GET['action'] === 'register' ? 'register' : 'login';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conn = getDBConnection();
@@ -123,8 +125,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <img src="../assets/watchvault-logo.svg" alt="">
     </div>
     
-    <h1 id="page-title">WatchVault</h1>
-    <div class="subtitle" id="page-subtitle">Your personal media tracker</div>
+    <h1 id="page-title"><?php echo ($action_mode === 'register') ? 'Join WatchVault' : 'WatchVault'; ?></h1>
+    <div class="subtitle" id="page-subtitle"><?php echo ($action_mode === 'register') ? 'Start tracking your journey today' : 'Your personal media tracker'; ?></div>
 
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" id="auth-form">
         <input type="hidden" name="action" id="action-input" value="<?php echo htmlspecialchars($action_mode); ?>">

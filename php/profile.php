@@ -24,7 +24,7 @@ $csrf_token = $_SESSION['csrf_token'];
 // Handle logout
 if (isset($_GET['logout'])) {
     session_destroy();
-    header('Location: login.php');
+    header('Location: landingPage.php');
     exit;
 }
 
@@ -239,88 +239,111 @@ function formatActivityDescription($description) {
     
     /* Profile Header with Enhanced Design */
     .profile-header-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg,  hsl(255, 31%, 18%), hsla(255, 54%, 16%, 1.00));
+        width: 900px;
+        max-width: 100%;
+        margin: 0 auto 30px;
         border-radius: 20px;
-        padding: 40px 30px;
+        padding: 50px 40px;
         color: white;
         position: relative;
         overflow: hidden;
-        margin-bottom: 30px;
-        box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 20px 40px rgba(64, 38, 86, 1);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 40px;
+        flex-wrap: nowrap;
     }
     
     .profile-header-card::before {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
+        top: 0; left: 0; right: 0; bottom: 0;
         background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
         background-size: cover;
     }
+
+    .profile-info {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      flex: 1;
+    }
     
     .user-avatar {
-        width: 40px;
-        height: 40px;
-        background: rgba(255, 255, 255, 0.2);
+        width: 120px;
+        height: 120px;
+        background: #a546ff;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 40px;
-        font-weight: 600;
-        border: 4px solid rgba(255, 255, 255, 0.3);
-        backdrop-filter: blur(10px);
+        font-size: 56px;
+        font-weight: 700;
+        backdrop-filter: blur(12px);
+        flex-shrink: 0;
     }
     
     .user-name {
-        font-size: 36px;
+        font-size: 40px;
         font-weight: 700;
-        margin-bottom: 8px;
-        letter-spacing: -0.5px;
+        margin: 0 0 12px 0;
+        letter-spacing: -0.8px;
         font-family: 'Poppins', sans-serif;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        text-shadow: 0 2px 6px rgba(0,0,0,0.3);
     }
     
     .user-meta {
         display: flex;
-        gap: 20px;
-        margin-bottom: 25px;
-        font-size: 14px;
+        flex-direction: column;
+        margin-top: 10px;
+        gap: 8px;
+        font-size: 15px;
         opacity: 0.9;
     }
     
     .user-meta-item {
         display: flex;
         align-items: center;
-        gap: 6px;
+        flex-shrink: 0;
+        gap: 10px;
     }
     
     .header-actions {
         display: flex;
-        gap: 12px;
-        position: relative;
-        z-index: 2;
+        flex-direction: column;
+        gap: 16px;
+        width: 260px;         
+        flex-shrink: 0;
     }
     
     /* Stats Grid */
     .stats-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(3, 1fr);  
+        grid-template-rows: repeat(2, 1fr);    
+        gap: 24px;
         margin-bottom: 40px;
+        max-width: 980px;
+        margin-left: auto;
+        margin-right: auto;
     }
     
     .stat-card {
-        background: white;
+        background:  hsl(255, 31%, 18%);
         border-radius: 16px;
-        padding: 25px 20px;
+        padding: 28px 20px;
         box-shadow: 0 8px 25px rgba(0,0,0,0.08);
         transition: all 0.3s ease;
-        border: 1px solid rgba(0,0,0,0.05);
+        border: 1px solid hsl(255, 31%, 25%);
         position: relative;
         overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
     }
     
     .stat-card:hover {
@@ -335,13 +358,13 @@ function formatActivityDescription($description) {
         left: 0;
         width: 100%;
         height: 4px;
-        background: linear-gradient(90deg, #667eea, #764ba2);
+
     }
     
     .stat-icon {
         width: 50px;
         height: 50px;
-        background: linear-gradient(135deg, #667eea20, #764ba220);
+        background: #a546ff;
         border-radius: 12px;
         display: flex;
         align-items: center;
@@ -352,20 +375,20 @@ function formatActivityDescription($description) {
     .stat-icon svg {
         width: 24px;
         height: 24px;
-        color: #667eea;
+        color: #ffffffff;
     }
     
     .stat-value {
         font-size: 32px;
         font-weight: 700;
-        color: #333;
+        color: #ffffffff;
         margin-bottom: 5px;
         line-height: 1;
     }
     
     .stat-label {
         font-size: 14px;
-        color: #666;
+        color: #bcbcbcff;
         font-weight: 500;
         text-transform: uppercase;
         letter-spacing: 0.5px;
@@ -373,7 +396,7 @@ function formatActivityDescription($description) {
     
     /* Activity Section */
     .recent-activity { 
-        background: white; 
+        background:   hsl(255, 31%, 18%); 
         padding: 30px; 
         border-radius: 20px; 
         box-shadow: 0 8px 25px rgba(0,0,0,0.08); 
@@ -392,7 +415,7 @@ function formatActivityDescription($description) {
     
     .activity-header h2 {
         margin: 0;
-        color: #333;
+        color: #ffffffff;
         font-size: 22px;
         font-weight: 700;
     }
@@ -405,27 +428,27 @@ function formatActivityDescription($description) {
     
     .activity-item {
         display: flex;
-        align-items: flex-start;
+        align-items: center;         
         gap: 15px;
-        padding: 18px;
-        border-radius: 12px;
+        padding: 18px 20px;           
+        border-radius: 14px;
         margin-bottom: 12px;
-        background: #f8f9ff;
-        border-left: 4px solid #667eea;
+        background:  hsla(255, 30%, 24%, 1.00);
         transition: all 0.3s ease;
+        min-height: 78px;
     }
     
     .activity-item:hover {
-        background: #f0f2ff;
+        background:  hsla(254, 30%, 30%, 1.00);
         transform: translateX(5px);
     }
     
     .activity-icon {
-        width: 40px;
-        height: 40px;
-        min-width: 40px;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        border-radius: 10px;
+        width: 46px;
+        height: 46px;
+        min-width: 46px;
+        background: #a546ff;
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -433,31 +456,35 @@ function formatActivityDescription($description) {
     }
     
     .activity-icon svg {
-        width: 20px;
-        height: 20px;
+        width: 22px;
+        height: 22px;
     }
     
     .activity-content {
         flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;    
+        min-height: 48px;
     }
     
     .activity-type {
         font-weight: 600;
-        color: #333;
+        color: #ffffffff;
         font-size: 15px;
         margin-bottom: 4px;
     }
     
     .activity-description {
         font-size: 13px;
-        color: #666;
+        color: #bcbcbcff;
         line-height: 1.5;
         margin-bottom: 6px;
     }
     
     .activity-time {
         font-size: 12px;
-        color: #888;
+        color: #bcbcbcff;
         display: flex;
         align-items: center;
         gap: 5px;
@@ -465,18 +492,21 @@ function formatActivityDescription($description) {
     
     /* Buttons */
     .logout-btn, .delete-btn { 
-        padding: 12px 24px; 
-        border-radius: 12px; 
-        cursor: pointer; 
-        text-decoration: none;
-        display: inline-block;
-        font-size: 14px;
+        padding: 16px 20px;
+        border-radius: 16px;
+        cursor: pointer;
+        font-size: 15px;
         font-weight: 600;
         border: none;
         transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-        z-index: 1;
+        width: 100%;
+        height: 60px;
+        box-sizing: border-box;                  
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
     }
     
     .logout-btn {
@@ -557,7 +587,7 @@ function formatActivityDescription($description) {
         display: inline-block;
         margin-top: 15px;
         padding: 10px 20px;
-        background: linear-gradient(135deg, #667eea, #764ba2);
+        background: #a546ff;
         color: white;
         text-decoration: none;
         border-radius: 10px;
@@ -569,11 +599,26 @@ function formatActivityDescription($description) {
         transform: translateY(-2px);
         box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
     }
+
+    .header-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      flex-shrink: 0;
+    }
+
+    .site-header .user-avatar{
+      width: 40px;
+      height: 40px;
+      font-size: 20px;
+    }
     
     /* Responsive */
     @media (max-width: 768px) {
         .profile-header-card {
-            padding: 30px 20px;
+            width: 100%;
+            padding: 40px 30px;
+            flex-wrap: wrap;
         }
         
         .user-avatar {
@@ -591,21 +636,37 @@ function formatActivityDescription($description) {
         }
         
         .header-actions {
-            flex-direction: column;
-            width: 100%;
+          width: 100%;                   
+          flex-direction: row;
+          gap: 12px;
         }
         
         .logout-btn, .delete-btn {
-            width: 100%;
-            text-align: center;
+          flex: 1;
+          padding: 16px 20px;
+          height: 56px;
         }
     }
     
-    @media (max-width: 480px) {
+    @media (max-width: 768px) {
+        .user-avatar {
+            width: 100px;
+            height: 100px;
+            font-size: 46px;
+        }
+
+        .user-name {
+            font-size: 32px;
+        }
+
         .stats-grid {
             grid-template-columns: 1fr;
         }
         
+        .header-actions {
+            flex-direction: column;
+        }
+
         .user-meta {
             flex-direction: column;
             gap: 10px;
@@ -640,55 +701,59 @@ function formatActivityDescription($description) {
         <div class="success-message">Your account has been deleted successfully.</div>
       <?php endif; ?>
       
-      <!-- Enhanced Profile Header -->
-      <div class="profile-header-card">
-        <div class="user-avatar">
-          <?php echo strtoupper(substr($username, 0, 1)); ?>
+    <!-- Enhanced Profile Header – NEW LAYOUT -->
+<div class="profile-header-card">
+        <div class="profile-info">
+            <div class="user-avatar">
+                <?php echo strtoupper(substr($username, 0, 1)); ?>
+            </div>
+            
+            <div>
+                <h1 class="user-name"><?php echo htmlspecialchars($username); ?></h1>
+                
+                <div class="user-meta">
+                    <div class="user-meta-item">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z"/>
+                            <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4z"/>
+                        </svg>
+                        <span>Member since <?php echo $created_at ? htmlspecialchars(date('F Y', strtotime($created_at))) : 'Recently'; ?></span>
+                    </div>
+                    
+                    <div class="user-meta-item">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm1-8a1 1 0 0 0-1-1H4a1 1 0 1 0 0 2h4a1 1 0 0 0 1-1z"/>
+                        </svg>
+                        <span>User ID: #<?php echo $user_id; ?></span>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <h1 class="user-name"><?php echo htmlspecialchars($username); ?></h1>
-        
-        <div class="user-meta">
-          <div class="user-meta-item">
-            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-              <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z"/>
-              <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4zM11 7.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/>
-            </svg>
-            <span>Member since <?php echo $created_at ? htmlspecialchars(date('F Y', strtotime($created_at))) : 'Recently'; ?></span>
-          </div>
-          
-          <div class="user-meta-item">
-            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-              <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm1-8a1 1 0 0 0-1-1H4a1 1 0 1 0 0 2h4a1 1 0 0 0 1-1z"/>
-            </svg>
-            <span>User ID: #<?php echo $user_id; ?></span>
-          </div>
-        </div>
-        
+
         <div class="header-actions">
-          <form method="GET" action="" style="margin:0; flex:1;">
-            <button type="submit" name="logout" value="1" class="logout-btn">
-              <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 8px;">
-                <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"/>
-                <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
-              </svg>
-              Logout
-            </button>
-          </form>
-          
-          <form id="delete-user-form" method="POST" onsubmit="return confirmDelete();" style="margin:0; flex:1;">
-            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
-            <input type="hidden" name="delete_account" value="1">
-            <button type="submit" class="delete-btn">
-              <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 8px;">
-                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-              </svg>
-              Delete Account
-            </button>
-          </form>
+            <form method="GET" action="">
+                <button type="submit" name="logout" value="1" class="logout-btn">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"/>
+                        <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+                    </svg>
+                    Logout
+                </button>
+            </form>
+
+            <form id="delete-user-form" method="POST" onsubmit="return confirmDelete();">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
+                <input type="hidden" name="delete_account" value="1">
+                <button type="submit" class="delete-btn">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                    </svg>
+                    Delete Account
+                </button>
+            </form>
         </div>
-      </div>
+    </div>
 
       <!-- Stats Grid -->
       <div class="stats-grid">
