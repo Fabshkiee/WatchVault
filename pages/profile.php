@@ -24,7 +24,7 @@ $csrf_token = $_SESSION['csrf_token'];
 // Handle logout
 if (isset($_GET['logout'])) {
     session_destroy();
-    header('Location: landingPage.html');
+    header('Location: login.php');
     exit;
 }
 
