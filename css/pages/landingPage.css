@@ -1,0 +1,207 @@
+/* ============================================
+   Landing Page Specific Styles
+   ============================================ */
+
+/* Pulsing Orb Animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(64px);
+  pointer-events: none;
+  z-index: -1;
+  background-color: hsl(270, 92%, 58%, 0.3);
+  animation: pulse 3.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.orb-1 {
+  width: 28rem;
+  height: 25rem;
+  top: 55%;
+  left: 35%;
+  transform: translate(-50%, -50%);
+}
+
+.orb-2 {
+  width: 28rem;
+  height: 25rem;
+  top: 40%;
+  right: 35%;
+  transform: translate(50%, -50%);
+  animation-delay: 1s;
+}
+
+/* Hero Section with Title and Logo */
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding-top: 4.375rem;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.title h1 {
+  font-size: 4.0625rem;
+  font-weight: 700;
+  color: var(--foreground);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.title img {
+  width: 3.375rem;
+  height: 3.375rem;
+  object-fit: contain;
+}
+
+/* Tagline */
+body {
+  margin: 0.5rem 0 0 0;
+  text-align: center;
+  color: var(--muted-foreground);
+  font-size: 1.125rem;
+  font-weight: 500;
+  background: var(--background);
+}
+
+.tagline {
+  margin-top: 0.688rem;
+}
+
+/* Slogan Section */
+
+.Slogan {
+  margin-top: 1.5rem;
+}
+
+.Slogan h1 {
+  text-align: center;
+  font-size: 3.75rem;
+  font-weight: 700;
+  color: var(--foreground);
+  margin: 0;
+}
+
+/* Secondary Slogan Section */
+.Slogan2 h1 {
+  color: var(--primary);
+  font-size: 3.75rem;
+  font-weight: 700;
+  margin: 0 0 0.625rem 0;
+  text-align: center;
+  letter-spacing: -0.02em;
+}
+
+.Slogan2 p {
+  color: var(--muted-foreground);
+  font-size: 1.25rem;
+  text-align: center;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Buttons */
+.Buttons {
+  display: flex;
+  justify-content: center;
+  gap: 3.75rem;
+  margin-top: 2.75rem;
+}
+
+.Buttons button {
+  height: 2.5rem;
+  padding: 0 2.5rem;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border: none;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+.Buttons button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: var(--glow-primary);
+}
+
+.Buttons .b2 button {
+  background-color: transparent;
+  border: 1.5px solid var(--primary);
+  color: var(--foreground);
+}
+
+.Buttons .b2 button:hover {
+  background-color: rgba(179, 156, 255, 0.1);
+}
+
+/* Cards Section */
+.cards {
+  display: flex;
+  justify-content: center;
+  gap: 3.625rem;
+  padding: 5.625rem 1.5rem;
+  flex-wrap: wrap;
+}
+
+.card {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background-color: transparent;
+  border: 1px solid rgba(179, 156, 255, 0.367);
+  border-radius: 1.25rem;
+  padding: 2.785rem 1.5rem;
+  width: 15.438rem;
+  text-align: center;
+  transition: var(--transition-smooth);
+  box-shadow: 1px 9px 31.4px rgba(0, 0, 0, 0.37);
+}
+
+.card:hover {
+  transform: translateY(-0.75rem);
+  border-color: rgba(179, 156, 255, 0.5);
+  box-shadow: 1px 9px 31.4px rgba(0, 0, 0, 0.37),
+    0 0 20px rgba(179, 156, 255, 0.3);
+}
+
+.card .icon {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3rem;
+}
+
+.card .icon img {
+  width: 3rem;
+  height: 3rem;
+  object-fit: contain;
+}
+
+.card h3 {
+  color: var(--foreground);
+  margin: 1rem 0 0.75rem 0;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.card p {
+  color: var(--muted-foreground);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  margin: 0;
+}
