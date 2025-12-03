@@ -3,9 +3,11 @@
 /* Hero Section */
 .dashboard-hero {
   text-align: center;
-  padding: 3rem 1.5rem 2rem;
+  padding: 7rem 1.5rem 2rem;
   max-width: 1400px;
   margin: 0 auto;
+  /* Removed z-index trapping here so fixed children can escape */
+  position: relative; 
 }
 
 .dashboard-hero-title {
@@ -14,6 +16,10 @@
   color: white;
   margin-bottom: 1rem;
   line-height: 1.2;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.5); 
+  /* Ensure title sits above lightbar (lightbar is z-index 0) */
+  position: relative;
+  z-index: 5; 
 }
 
 .logo-text {
@@ -31,23 +37,32 @@
   position: relative;
   max-width: 42rem;
   margin: 2rem auto 0;
+  z-index: 20; 
 }
 
-/* === STICKY STATE === */
-/* Moves the container to fixed position over the header */
+/* === STICKY SEARCH STATE === */
 .dashboard-search-container.sticky {
   position: fixed;
   top: 0.5rem;
   left: 50%;
   transform: translateX(-50%);
   margin: 0;
-  z-index: 100; 
+  /* FIX: High z-index to sit ON TOP of the header (which is z-index 50) */
+  z-index: 1000; 
   width: 37.5rem; 
 }
 
 /* Ensure input stays EXACTLY the same size in sticky mode */
 .dashboard-search-container.sticky .dashboard-search-input {
   height: 3.5rem;
+}
+
+/* FIX: Placeholder styles to prevent layout jump when search becomes sticky */
+#search-placeholder {
+  display: none; /* JS toggles this to block */
+  height: 3.5rem; /* Matches input height */
+  margin-top: 2rem; /* Matches container margin-top */
+  width: 100%;
 }
 
 .dashboard-search-icon {
@@ -97,6 +112,7 @@
   margin-top: 2rem;
   flex-wrap: wrap;
   position: relative;
+  z-index: 10; 
 }
 
 .dashboard-filter-group .active-pill {
@@ -124,6 +140,8 @@
   padding: 0 1.5rem 1.5rem;
   max-width: 1400px;
   margin: 0 auto;
+  position: relative;
+  z-index: 10; 
 }
 
 .dashboard-status-buttons {
@@ -221,9 +239,11 @@
 
 /* Content Sections */
 .dashboard-content {
-  max-width: 1400px; /* Limits the width to match your header/hero */
-  margin: 0 auto;    /* Centers the container horizontally */
-  width: 100%;       /* Ensures it fills space on smaller screens */
+  max-width: 1400px; 
+  margin: 0 auto;    
+  width: 100%;       
+  position: relative;
+  z-index: 10; 
 }
 
 /* --- NEW SECTION STYLES --- */
@@ -431,27 +451,9 @@
 }
 
 /* Override browser-injected autofill styling (Chrome / Chromium) */
-/* Browsers inject their own rules (shown as :-internal-autofill-selected in DevTools).
-   You cannot remove those injected rules from your source files; instead override them
-   using the vendor autofill pseudo-classes and strong rules below. */
 input:-webkit-autofill,
 textarea:-webkit-autofill,
-select:-webkit-autofill,
-input:-webkit-autofill:hover,
-textarea:-webkit-autofill:hover,
-select:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-textarea:-webkit-autofill:focus,
-select:-webkit-autofill:focus,
-input:-moz-autofill,
-textarea:-moz-autofill,
-select:-moz-autofill,
-input:-moz-autofill:hover,
-textarea:-moz-autofill:hover,
-select:-moz-autofill:hover,
-input:-moz-autofill:focus,
-textarea:-moz-autofill:focus,
-select:-moz-autofill:focus {
+select:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px var(--background) inset !important;
   box-shadow: 0 0 0px 1000px var(--background) inset !important;
   -webkit-text-fill-color: #ffffff !important;
@@ -460,7 +462,6 @@ select:-moz-autofill:focus {
   background-clip: padding-box !important;
 }
 
-/* Attempt to override the internal pseudo (no-op in many browsers but harmless to include) */
 input:-internal-autofill-selected {
   -webkit-box-shadow: 0 0 0px 1000px var(--background) inset !important;
   box-shadow: 0 0 0px 1000px var(--background) inset !important;

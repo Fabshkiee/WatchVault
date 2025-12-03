@@ -16,11 +16,13 @@ if (!isset($_SESSION['user_id'])) {
   <link rel="stylesheet" href="../css/global.css">
   <link rel="stylesheet" href="../css/pages/dashboard.css">
   <link rel="stylesheet" href="../css/pages/media_details.css">
+  <!-- New Lightbar CSS -->
+  <link rel="stylesheet" href="../css/lightbar.css"> 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-<body>
+<body dir="ltr"> <!-- Added dir="ltr" as required by lightbar CSS -->
   <div class="page-container">
     <!-- Header -->
     <header class="site-header">
@@ -40,6 +42,12 @@ if (!isset($_SESSION['user_id'])) {
         </div>
       </div>
     </header>
+
+    <!-- NEW LIGHTBAR COMPONENT -->
+    <div class="lightbar">
+        <canvas class="particles"></canvas>
+        <div class="lightbar-visual"></div>
+    </div>
 
     <!-- Hero Section -->
     <section class="dashboard-hero">
@@ -118,5 +126,7 @@ if (!isset($_SESSION['user_id'])) {
   <script src="../js/components/stickySearch.js"></script>
   <script src="../js/components/watchlistManager.js"></script>
   <script src="../js/components/mediaDetailsModal.js"></script>
+  <!-- New Lightbar JS -->
+  <script src="../js/lightbar.js"></script>
 </body>
 </html>

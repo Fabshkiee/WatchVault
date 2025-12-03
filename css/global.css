@@ -58,6 +58,8 @@ body {
   background-attachment: fixed;
   color: hsl(var(--foreground));
   min-height: 100vh;
+  /* FIX: Horizontal Scroll Issue caused by wide lightbar */
+  overflow-x: hidden; 
 }
 
 /* ============================================
@@ -83,7 +85,7 @@ body {
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: 50; /* Header Stack Level */
   border-radius: 20px;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -307,5 +309,3 @@ body {
   position: relative;
   z-index: 1;
 }
-
-
