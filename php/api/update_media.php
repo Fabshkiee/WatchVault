@@ -44,10 +44,11 @@ try {
     $review = $data["review"] ?? '';
     $status = $data["status"] ?? 'wantToWatch';
     
+    // FIX: Changed rating binding from 'i' (int) to 'd' (double)
     $query->bind_param(
-        "sisii",
+        "sdsii",
         $review,
-        $rating,
+        $rating, // 'd' for double/decimal
         $status,
         $data["id"],
         $_SESSION["user_id"]

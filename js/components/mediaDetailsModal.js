@@ -9,6 +9,7 @@ let tempRating = 0;
 
 async function openMediaDetails(mediaData) {
   let tmdbDetails = null;
+  // Fetch extra details if we have a TMDB ID
   if (mediaData.tmdb_id) {
     try {
       const resp = await fetch(`../php/api/get_tmdb_details.php?id=${encodeURIComponent(mediaData.tmdb_id)}&type=${encodeURIComponent(mediaData.type || 'movie')}`);
@@ -21,6 +22,7 @@ async function openMediaDetails(mediaData) {
     }
   }
 
+  // Merge existing data with fetched details
   const details = Object.assign({}, mediaData);
   if (tmdbDetails) {
     details.overview = tmdbDetails.overview || details.overview;
@@ -33,6 +35,7 @@ async function openMediaDetails(mediaData) {
   }
 
   modalMediaDetails = details;
+  // Convert DB rating (0-10) to Star rating (0-5)
   currentRating = details.rating ? (details.rating / 2) : 0;
   modalStatus = details.status || 'wantToWatch';
   currentStatusModal = modalStatus;
@@ -189,9 +192,7 @@ function generateStarsStructure() {
 
 function initializeStarRating() {
   const stars = document.querySelectorAll('.star');
-  const starContainer = document.getElementById('star-rating');
-  const textScore = document.getElementById('rating-text-score');
-
+  // Update visuals immediately based on currentRating
   updateStarVisuals(currentRating);
 
   stars.forEach(star => {
@@ -251,12 +252,23 @@ async function saveMediaDetails() {
       method: "POST", body: JSON.stringify(dataToSave)
     });
     const data = await res.json();
-    showToast(data.message);
-    closeMediaDetails();
-    loadWatchlist();
-    showToast("Saved successfully!");
+    
+    // FIX: Only call loadWatchlist if it exists (it doesn't exist on search page)
+    if (typeof loadWatchlist === 'function') {
+        loadWatchlist();
+    }
+    
+    // Show toast message from server response
+    if (data.success) {
+        showToast(data.message);
+        closeMediaDetails();
+    } else {
+        showToast(data.message || "Error saving");
+    }
+    
   } catch (error) {
     console.error(error);
+    showToast("An error occurred while saving.");
   }
 }
 
@@ -265,7 +277,7 @@ document.addEventListener('click', function (e) {
   const card = e.target.closest('.watchlist-media-card');
   if (card) {
     openMediaDetails({
-      id: parseInt(card.dataset.id),
+      id: parseInt(card.dataset.id), // NaN if search result
       tmdb_id: parseInt(card.dataset.tmdbId),
       title: card.dataset.title,
       poster: card.dataset.poster,

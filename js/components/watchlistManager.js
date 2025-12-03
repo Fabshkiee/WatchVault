@@ -88,11 +88,22 @@ function renderWatchlist() {
 }
 
 function createCardHTML(item) {
-  const poster = item.poster ? `https://image.tmdb.org/t/p/w400${item.poster}` : '../../assets/no-poster.png';
-  const escapedTitle = escapeHtml(item.title);
-  const year = item.release_date ? new Date(item.release_date).getFullYear() : '';
+  // --- FIX: Robust Fallbacks for Missing Data ---
+  const posterSrc = item.poster 
+    ? `https://image.tmdb.org/t/p/w400${item.poster}` 
+    : '../assets/no-poster.png'; // Fallback if API return null
+    
+  const title = item.title || 'Untitled';
+  const escapedTitle = escapeHtml(title);
+  
+  // Safe date parsing
+  const year = item.release_date 
+    ? new Date(item.release_date).getFullYear() 
+    : 'N/A';
+    
   const typeLabel = item.type === 'tv' ? 'TV Show' : 'Movie';
   const rating = item.rating || 0;
+  const overview = item.overview || 'No description available.';
 
   const ratingBadge = rating > 0 ? `
     <div class="watchlist-media-rating">
@@ -103,6 +114,7 @@ function createCardHTML(item) {
     </div>
   ` : '';
 
+  // Use onerror to handle 404s even if variable wasn't null
   return `
     <div class="watchlist-media-card"
          data-id="${item.id}"
@@ -110,7 +122,7 @@ function createCardHTML(item) {
          data-title="${escapedTitle}"
          data-poster="${item.poster || ''}"
          data-type="${item.type}"
-         data-overview="${escapeHtml(item.overview || '')}"
+         data-overview="${escapeHtml(overview)}"
          data-release-date="${item.release_date || ''}"
          data-backdrop="${item.backdrop_path || ''}"
          data-status="${item.status || 'wantToWatch'}"
@@ -118,8 +130,10 @@ function createCardHTML(item) {
          data-review="${escapeHtml(item.review || '')}">
 
       <div class="watchlist-poster-container">
-        <img src="${poster}" alt="${escapedTitle}" class="watchlist-media-poster"
-             onerror="this.src='../../assets/no-poster.png'" />
+        <img src="${posterSrc}" 
+             alt="${escapedTitle}" 
+             class="watchlist-media-poster"
+             onerror="this.onerror=null; this.src='../assets/no-poster.png';" />
         <div class="watchlist-poster-overlay"></div>
         ${ratingBadge}
 

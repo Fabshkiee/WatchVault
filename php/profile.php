@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_account'])) {
         $conn->commit();
         
         session_destroy();
-        header('Location: landingPage.html?deleted=1');
+        header('Location: landingPage.php?deleted=1');
         exit;
     } catch (Exception $e) {
         $conn->rollback();
