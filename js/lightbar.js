@@ -122,10 +122,10 @@ function runParticleEffect() {
     
     // Define the assets
     const assets = [
-        { image: "../assets/watchvault-logo.svg", sizeRange: [15, 30] },
-        { image: "../assets/watchvault-logo.svg", sizeRange: [15, 30] },
-        { image: "../assets/watchvault-logo.svg", sizeRange: [15, 30] },
-        { image: "../assets/watchvault-logo.svg", sizeRange: [15, 30] }
+        { image: "../assets/fw1.svg", sizeRange: [15, 30] },
+        { image: "../assets/fw2.svg", sizeRange: [15, 30] },
+        { image: "../assets/fw3.svg", sizeRange: [15, 30] },
+        { image: "../assets/fw4.svg", sizeRange: [15, 30] }
     ];
 
     // Percentage of particles that should be images (e.g., 15%)

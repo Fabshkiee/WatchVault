@@ -16,6 +16,6 @@
 }
 
 p.search-results-subtitle {
-  color: var(--foreground-muted);
+  color: var(--secondary);
   font-size: 1rem;
 }
