@@ -64,7 +64,6 @@
         <button class="filter-button dashboard-filter-button active" data-filter="all">All</button>
         <button class="filter-button dashboard-filter-button" data-filter="movie">Movies</button>
         <button class="filter-button dashboard-filter-button" data-filter="tv">TV Shows</button>
-        <button class="filter-button dashboard-filter-button" data-filter="anime">Anime</button>
       </div>
     </section>
 
