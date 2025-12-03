@@ -41,8 +41,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
 
-            $stmt->close();
-            closeDBConnection();
+            if ($stmt) { $stmt->close(); }
+            closeDBConnection($conn);
         } else {
             $error = "Database connection error.";
         }
