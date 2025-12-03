@@ -1,0 +1,93 @@
+:root {
+    --colors-background-main: 3, 3, 3;
+    --colors-lightBar-light: 17, 19, 52;
+    --colors-search-background: 13, 13, 13;
+    --colors-search-placeholder: 79, 79, 79;
+    --colors-search-icon: 40, 40, 40;
+}
+
+/* Lightbar Container Positioning */
+.lightbar,
+.lightbar-visual {
+    position: absolute;
+    width: 500vw;
+    height: 800px;
+    pointer-events: none;
+    -webkit-user-select: none;
+    user-select: none;
+    top: 38px;
+    /* CHANGED: Set to 0 to sit behind content */
+    z-index: 0; 
+    overflow: hidden;
+}
+
+[dir] .lightbar {
+    left: 50vw;
+    transform: translateX(-50%);
+}
+
+@media (min-width: 640px) {
+    .lightbar,
+    .lightbar-visual {
+        width: 150vw;
+    }
+    [dir] .lightbar {
+        left: -25vw;
+        transform: initial;
+    }
+}
+
+[dir] .lightbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    --d: 3s;
+    --animation: cubic-bezier(.75, -0, .25, 1);
+    animation: boot var(--d) var(--animation) forwards;
+    /* CHANGED: Explicitly set to 0 to avoid covering text */
+    z-index: 0;
+}
+
+[dir] .lightbar-visual {
+    left: 0;
+    --top: rgb(var(--colors-background-main));
+    --bottom: rgb(var(--colors-lightBar-light));
+    --first: conic-gradient(from 90deg at 80% 50%, var(--top), var(--bottom));
+    --second: conic-gradient(from 270deg at 20% 50%, var(--bottom), var(--top));
+    -webkit-mask-image: radial-gradient(100% 50% at center center, black, transparent);
+    mask-image: radial-gradient(100% 50% at center center, black, transparent);
+    background-image: var(--first), var(--second);
+    background-position-x: 1%, 99%;
+    background-position-y: 0%, 0%;
+    background-size: 50% 100%, 50% 100%;
+    opacity: 1;
+    transform: rotate(180deg) translateZ(0px) translateY(400px);
+    transform-origin: center center;
+    background-repeat: no-repeat;
+    animation: lightbarBoot var(--d) var(--animation) forwards;
+    /* CHANGED: Explicitly set to 0 */
+    z-index: 0;
+}
+
+.lightbar canvas.particles {
+    width: 40%;
+    height: 300px;
+    transform: translateY(-250px);
+    position: relative; 
+    /* CHANGED: Lowered from 2 to 0 */
+    z-index: 0; 
+}
+
+@keyframes boot {
+    from { opacity: 0.25 }
+    to { opacity: 1 }
+}
+
+@keyframes lightbarBoot {
+    0% {
+        transform: rotate(180deg) translateZ(0px) translateY(400px) scaleX(0.8);
+    }
+    100% {
+        transform: rotate(180deg) translateZ(0px) translateY(400px) scaleX(1);
+    }
+}

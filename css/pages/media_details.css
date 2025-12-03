@@ -1,0 +1,465 @@
+/* Media Details Modal Overlay */
+#media-details-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 1000;
+  display: none;
+  overflow-y: auto;
+}
+
+#media-details-container.active {
+  display: block;
+}
+
+.media-details-modal {
+  background: transparent;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Close Button */
+.modal-close-btn {
+  position: fixed;
+  top: 1rem;
+  right: 21rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--background);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+  color: white;
+}
+
+.modal-close-btn:hover {
+  background: var(--card);
+  transform: scale(1.1);
+}
+
+.modal-close-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Backdrop Image*/
+.media-backdrop {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  display: block;
+  mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  border-radius: 20px;
+}
+
+/* Content Container */
+.media-details-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 2.5rem 3rem;
+  margin-top: -150px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Glass Background Layer */
+.media-details-content::before {
+  content: "";
+  position: absolute;
+  inset: 0; 
+  z-index: -1; 
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 1px 9px 31.4px rgba(0, 0, 0, 0.37);
+  border: 1px solid rgba(179, 156, 255, 0.367);
+  background-color: rgba(23, 18, 40, 0.6);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 100%);
+  pointer-events: none;
+}
+
+/* Title Section */
+.media-title-section {
+  margin-bottom: 1.5rem;
+}
+
+.media-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: white;
+  line-height: 1.1;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+  margin-bottom: 0.75rem;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* Primary Meta (Rating + Year) */
+.media-meta-primary {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  font-size: 1.1rem;
+  color: white;
+  font-weight: 600;
+}
+
+.tmdb-rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tmdb-logo-text {
+  font-weight: 900;
+  color: #01b4e4;
+  letter-spacing: -1px;
+  background: linear-gradient(to right, #90cea1, #01b4e4);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 0.9em;
+  text-transform: uppercase;
+}
+
+.media-year {
+  color: white;
+  font-weight: 600;
+}
+
+.meta-separator {
+  color: white;
+  font-size: 0.8em;
+}
+
+/* Genre Tags */
+.media-genres {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.genre-tag {
+  padding: 0.5rem 1.5rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  color: var(--foreground);
+  background: rgba(143, 75, 226, 0.20);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 1px 9px 31.4px rgba(0, 0, 0, 0.7);
+  position: relative;
+  border: none;
+  z-index: 1;
+}
+
+.genre-tag::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px; 
+  padding: 1.5px;
+  background: linear-gradient(135deg, #BFAAFF, #594597); 
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.genre-tag:hover {
+  background: rgba(143, 75, 226, 0.30);
+}
+
+/* Description */
+.media-description {
+  color: #ffffff;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 3rem;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* --- BOTTOM ROW LAYOUT (The Key Logic) --- */
+.media-bottom-row {
+  display: flex;
+  justify-content: flex-end; /* This pushes actions to the right by default */
+  align-items: flex-end;     /* Align bottom so buttons align with bottom of review box */
+  gap: 2rem;
+  width: 100%;
+}
+
+/* ACTIONS (Right Side) */
+.media-watchlist-actions {
+  display: flex;
+  flex-direction: column; 
+  gap: 1rem;
+  width: 100%;
+  max-width: 320px; /* Fixed width for the actions column */
+  flex-shrink: 0;   /* Prevent it from shrinking */
+}
+
+.watchlist-status-dropdown {
+  position: relative;
+  width: 100%;
+}
+
+.status-dropdown-btn {
+  width: 100%;
+  background: rgba(30, 30, 40, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.875rem 1rem;
+  color: white;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+}
+
+.status-dropdown-btn:hover {
+  background: rgba(40, 40, 50, 0.9);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.status-dropdown-btn svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s ease;
+}
+
+.status-dropdown-btn.active svg {
+  transform: rotate(180deg);
+}
+
+.status-dropdown-menu {
+  position: absolute;
+  bottom: 100%; /* Make it pop UP instead of down */
+  left: 0;
+  right: 0;
+  margin-bottom: 0.5rem;
+  background: rgba(28, 23, 43, 0.98);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  z-index: 20;
+  display: none;
+}
+
+.status-dropdown-menu.active {
+  display: block;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.status-option {
+  padding: 0.875rem 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9375rem;
+}
+
+.status-option:hover {
+  background: rgba(165, 70, 255, 0.15);
+  color: white;
+}
+
+.status-option.selected {
+  background: rgba(165, 70, 255, 0.25);
+  color: #a546ff;
+  font-weight: 600;
+}
+
+/* FINISHED SECTION (Left Side - Filling the Gap) */
+.finished-status-section {
+  display: none;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  flex: 1; /* KEY: This makes it expand to fill the left gap */
+  max-width: 100%;
+}
+
+.finished-status-section.active {
+  display: block;
+  animation: fadeInLeft 0.4s ease;
+}
+
+@keyframes fadeInLeft {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Rating Section */
+.rating-section {
+  margin-bottom: 1.5rem;
+}
+
+.rating-label {
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.star-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.star {
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.rating-text-score {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+  margin-left: 0.75rem;
+  min-width: 40px; 
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Review Section */
+.review-section {
+  margin-top: 1rem;
+}
+
+.review-label {
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.review-textarea {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.875rem 1rem;
+  color: white;
+  font-size: 0.9375rem;
+  font-family: 'Inter', sans-serif;
+  resize: vertical;
+  min-height: 100px;
+  transition: all 0.3s ease;
+}
+
+.review-textarea::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.review-textarea:focus {
+  outline: none;
+  border-color: rgba(165, 70, 255, 0.5);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Add/Update Button */
+.add-to-list-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(165, 70, 255, 0.3);
+  text-align: center;
+  width: 100%;
+}
+
+.add-to-list-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(165, 70, 255, 0.5);
+}
+
+.add-to-list-btn:active {
+  transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .media-backdrop {
+    height: 400px;
+  }
+
+  .media-details-content {
+    padding: 1.5rem;
+    margin-top: -100px;
+  }
+
+  .media-title {
+    font-size: 2.5rem;
+  }
+
+  .media-bottom-row {
+    flex-direction: column-reverse; /* Stack them on mobile, Actions on top of Review */
+    gap: 1.5rem;
+  }
+
+  .media-watchlist-actions {
+    max-width: 100%;
+  }
+}
+
+/* Scrollbar Styling */
+#media-details-container::-webkit-scrollbar {
+  width: 8px;
+}
+#media-details-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+#media-details-container::-webkit-scrollbar-thumb {
+  background: rgba(165, 70, 255, 0.5);
+  border-radius: 4px;
+}

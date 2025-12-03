@@ -67,12 +67,8 @@ body {
   background-attachment: fixed;
   color: hsl(var(--foreground));
   min-height: 100vh;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-body::-webkit-scrollbar {
-  display: none;
+  /* FIX: Horizontal Scroll Issue caused by wide lightbar */
+  overflow-x: hidden; 
 }
 
 /* ============================================
@@ -98,12 +94,13 @@ body::-webkit-scrollbar {
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: 50; /* Header Stack Level */
   border-radius: 20px;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   box-shadow: 1px 9px 31.4px rgba(0, 0, 0, 0.37);
   border: 1px solid rgba(179, 156, 255, 0.367);
+  background-color: rgba(23, 18, 40, 0.6) ;
 }
 
 .header-container {
@@ -321,5 +318,3 @@ body::-webkit-scrollbar {
   position: relative;
   z-index: 1;
 }
-
-
