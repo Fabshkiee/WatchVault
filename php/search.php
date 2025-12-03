@@ -136,6 +136,14 @@ $initial_category = isset($_GET['category']) ? $_GET['category'] : 'all';
         if(query) {
             const newUrl = `search.php?q=${encodeURIComponent(query)}&category=${currentCategory}`;
             window.history.pushState({path: newUrl}, '', newUrl);
+            
+            // --- FIX START: Update subtitle text manually ---
+            const subtitle = document.querySelector('.search-results-subtitle');
+            if (subtitle) {
+                subtitle.textContent = `Showing results for "${query}"`;
+            }
+            // --- FIX END ---
+            
             performSearch(query, currentCategory);
         }
     }

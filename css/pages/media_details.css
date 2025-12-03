@@ -30,7 +30,7 @@
 .modal-close-btn {
   position: fixed;
   top: 1rem;
-  right: 21rem;
+  right: 26rem;
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
@@ -390,6 +390,9 @@
   resize: vertical;
   min-height: 100px;
   transition: all 0.3s ease;
+
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
 }
 
 .review-textarea::placeholder {

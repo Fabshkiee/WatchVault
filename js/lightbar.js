@@ -1,6 +1,6 @@
 /**
  * Particle Effect Logic
- * Adapted for WatchVault Dashboard from pstream movie site hehe thanku opensource
+ * Adapted for WatchVault Dashboard
  */
 
 class Particle {
@@ -35,7 +35,7 @@ class Particle {
             ? Math.random() * (this.options.sizeRange[1] - this.options.sizeRange[0]) + this.options.sizeRange[0]
             : 10;
 
-        // Custom motion for specific asset types if needed, generally false for falling items
+        // Custom motion for specific asset types if needed
         if (this.options.horizontalMotion) {
             this.direction = Math.random() <= 0.5 ? 0 : Math.PI;
             this.y = Math.random() * canvas.height; 
@@ -78,22 +78,15 @@ class Particle {
         const o = (x - x * x) * 4; 
         ctx.globalAlpha = Math.max(0, o * 0.8);
 
-        if (this.options.imgSrc) {
-            const img = new Image();
-            img.src = this.options.imgSrc;
-            
+        // FIX: Use preloaded imgObj instead of creating new Image() every frame
+        if (this.options.imgObj) {
             ctx.translate(this.x, this.y);
             const w = this.size;
             const h = w; 
             
-            // Draw image instead of text/emoji
-            // We use the loaded image if cached, otherwise this might flicker on first load
-            // Ideally images should be preloaded, but for this effect, drawing the Image object works 
-            // if the browser cache handles it fast enough (which it usually does for repeated assets).
-            
             // Rotation logic
             ctx.rotate(this.direction - Math.PI); 
-            ctx.drawImage(img, -w / 2, -h / 2, w, h);
+            ctx.drawImage(this.options.imgObj, -w / 2, -h / 2, w, h);
 
         } else {
             // Default white dot fallback
@@ -121,12 +114,21 @@ function runParticleEffect() {
     const particleCount = 265;
     
     // Define the assets
-    const assets = [
-        { image: "../assets/fw1.svg", sizeRange: [15, 30] },
-        { image: "../assets/fw2.svg", sizeRange: [15, 30] },
-        { image: "../assets/fw3.svg", sizeRange: [15, 30] },
-        { image: "../assets/fw4.svg", sizeRange: [15, 30] }
+    const assetsConfig = [
+        { src: "../assets/fw1.svg", sizeRange: [15, 30] },
+        { src: "../assets/fw2.svg", sizeRange: [15, 30] },
+        { src: "../assets/fw3.svg", sizeRange: [15, 30] },
+        { src: "../assets/fw4.svg", sizeRange: [15, 30] }
     ];
+
+    const preloadedAssets = assetsConfig.map(config => {
+        const img = new Image();
+        img.src = config.src;
+        return {
+            imgObj: img,
+            sizeRange: config.sizeRange
+        };
+    });
 
     // Percentage of particles that should be images (e.g., 15%)
     let imageParticleCount = particleCount * 0.15; 
@@ -139,10 +141,10 @@ function runParticleEffect() {
         let particleOptions = {};
         
         if (isImageParticle) {
-            // Pick a random asset
-            const randomAsset = assets[Math.floor(Math.random() * assets.length)];
+            // Pick a random preloaded asset
+            const randomAsset = preloadedAssets[Math.floor(Math.random() * preloadedAssets.length)];
             particleOptions = {
-                imgSrc: randomAsset.image,
+                imgObj: randomAsset.imgObj, // Pass the actual image object
                 sizeRange: randomAsset.sizeRange,
                 horizontalMotion: false 
             };
@@ -152,7 +154,7 @@ function runParticleEffect() {
         particles.push(particle);
     }
 
-    // --- SPEED FIX LOGIC ---
+    // --- PHYSICS LOOP ---
     let shouldTick = true;
     let handle = null;
     
