@@ -2,7 +2,7 @@
 session_start();
 require_once '../php/config/db_connect.php';
 
-// Require authentication - fix: should redirect to login, not dashboard
+// Require authentication
 if (empty($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
@@ -39,40 +39,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_account'])) {
     try {
         // Delete from activity_log
         $stmt = $conn->prepare('DELETE FROM activity_log WHERE user_id = ?');
-        if (!$stmt) {
-            throw new Exception("Failed to prepare activity log delete: " . $conn->error);
-        }
         $stmt->bind_param('i', $user_id);
-        if (!$stmt->execute()) {
-            throw new Exception("Failed to delete activity log: " . $stmt->error);
-        }
+        $stmt->execute();
         $stmt->close();
         
         // Delete from watchlist
         $stmt = $conn->prepare('DELETE FROM watchlist WHERE user_id = ?');
-        if (!$stmt) {
-            throw new Exception("Failed to prepare watchlist delete: " . $conn->error);
-        }
         $stmt->bind_param('i', $user_id);
-        if (!$stmt->execute()) {
-            throw new Exception("Failed to delete watchlist: " . $stmt->error);
-        }
+        $stmt->execute();
         $stmt->close();
         
         // Delete from users
         $stmt = $conn->prepare('DELETE FROM users WHERE id = ?');
-        if (!$stmt) {
-            throw new Exception("Failed to prepare user delete: " . $conn->error);
-        }
         $stmt->bind_param('i', $user_id);
-        if (!$stmt->execute()) {
-            throw new Exception("Failed to delete user: " . $stmt->error);
-        }
+        $stmt->execute();
         $stmt->close();
         
         $conn->commit();
         
         session_destroy();
+        // Redirect with deleted flag
         header('Location: landingPage.php?deleted=1');
         exit;
     } catch (Exception $e) {
@@ -100,8 +86,6 @@ if ($stmt) {
     if ($stmt->execute()) {
         $stmt->bind_result($username, $created_at);
         $stmt->fetch();
-    } else {
-        error_log("Failed to fetch user data: " . $stmt->error);
     }
     $stmt->close();
 }
@@ -173,10 +157,9 @@ if ($stmt) {
     $stmt->close();
 }
 
-// Check if activity_log table exists before querying
+// Check if activity_log table exists
 $table_check = $conn->query("SHOW TABLES LIKE 'activity_log'");
 if ($table_check && $table_check->num_rows > 0) {
-    // Recent activity (last 10)
     $stmt = $conn->prepare('
         SELECT action_type, description, created_at 
         FROM activity_log 
@@ -195,11 +178,10 @@ if ($table_check && $table_check->num_rows > 0) {
         $stmt->close();
     }
 } else {
-    // Table doesn't exist, show message
     $activity_table_missing = true;
 }
 
-// Function to format activity messages
+// Helper functions
 function formatActivityMessage($action_type) {
     $messages = [
         'add_to_watchlist' => 'Added to Watchlist',
@@ -211,7 +193,6 @@ function formatActivityMessage($action_type) {
     return $messages[$action_type] ?? ucfirst(str_replace('_', ' ', $action_type));
 }
 
-// Function to format activity description
 function formatActivityDescription($description) {
     if (strlen($description) > 60) {
         return htmlspecialchars(substr($description, 0, 57) . '...');
@@ -231,13 +212,12 @@ function formatActivityDescription($description) {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    /* Inline Profile Styles */
     .profile-container { 
         max-width: 980px; 
         margin: 28px auto; 
         padding: 18px;
     }
-    
-    /* Profile Header with Enhanced Design */
     .profile-header-card {
         background: linear-gradient(135deg,  hsl(255, 31%, 18%), hsla(255, 54%, 16%, 1.00));
         width: 900px;
@@ -255,7 +235,6 @@ function formatActivityDescription($description) {
         gap: 40px;
         flex-wrap: nowrap;
     }
-    
     .profile-header-card::before {
         content: '';
         position: absolute;
@@ -263,14 +242,12 @@ function formatActivityDescription($description) {
         background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
         background-size: cover;
     }
-
     .profile-info {
       display: flex;
       align-items: center;
       gap: 28px;
       flex: 1;
     }
-    
     .user-avatar {
         width: 120px;
         height: 120px;
@@ -284,7 +261,6 @@ function formatActivityDescription($description) {
         backdrop-filter: blur(12px);
         flex-shrink: 0;
     }
-    
     .user-name {
         font-size: 40px;
         font-weight: 700;
@@ -293,7 +269,6 @@ function formatActivityDescription($description) {
         font-family: 'Poppins', sans-serif;
         text-shadow: 0 2px 6px rgba(0,0,0,0.3);
     }
-    
     .user-meta {
         display: flex;
         flex-direction: column;
@@ -302,14 +277,12 @@ function formatActivityDescription($description) {
         font-size: 15px;
         opacity: 0.9;
     }
-    
     .user-meta-item {
         display: flex;
         align-items: center;
         flex-shrink: 0;
         gap: 10px;
     }
-    
     .header-actions {
         display: flex;
         flex-direction: column;
@@ -317,8 +290,6 @@ function formatActivityDescription($description) {
         width: 260px;         
         flex-shrink: 0;
     }
-    
-    /* Stats Grid */
     .stats-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);  
@@ -329,7 +300,6 @@ function formatActivityDescription($description) {
         margin-left: auto;
         margin-right: auto;
     }
-    
     .stat-card {
         background:  hsl(255, 31%, 18%);
         border-radius: 16px;
@@ -345,22 +315,15 @@ function formatActivityDescription($description) {
         justify-content: center;
         text-align: center;
     }
-    
     .stat-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 15px 35px rgba(0,0,0,0.12);
     }
-    
     .stat-card::before {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-
+        top: 0; left: 0; width: 100%; height: 4px;
     }
-    
     .stat-icon {
         width: 50px;
         height: 50px;
@@ -371,13 +334,11 @@ function formatActivityDescription($description) {
         justify-content: center;
         margin-bottom: 15px;
     }
-    
     .stat-icon svg {
         width: 24px;
         height: 24px;
         color: #ffffffff;
     }
-    
     .stat-value {
         font-size: 32px;
         font-weight: 700;
@@ -385,7 +346,6 @@ function formatActivityDescription($description) {
         margin-bottom: 5px;
         line-height: 1;
     }
-    
     .stat-label {
         font-size: 14px;
         color: #bcbcbcff;
@@ -393,8 +353,6 @@ function formatActivityDescription($description) {
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
-    
-    /* Activity Section */
     .recent-activity { 
         background:   hsl(255, 31%, 18%); 
         padding: 30px; 
@@ -403,7 +361,6 @@ function formatActivityDescription($description) {
         margin-bottom: 30px; 
         border: 1px solid rgba(0,0,0,0.05);
     }
-    
     .activity-header {
         display: flex;
         justify-content: space-between;
@@ -412,20 +369,15 @@ function formatActivityDescription($description) {
         padding-bottom: 15px;
         border-bottom: 2px solid #f0f0f0;
     }
-    
     .activity-header h2 {
         margin: 0;
         color: #ffffffff;
         font-size: 22px;
         font-weight: 700;
     }
-    
     ul.activity { 
-        padding-left:0; 
-        list-style:none; 
-        margin:0; 
+        padding-left:0; list-style:none; margin:0; 
     }
-    
     .activity-item {
         display: flex;
         align-items: center;         
@@ -437,12 +389,10 @@ function formatActivityDescription($description) {
         transition: all 0.3s ease;
         min-height: 78px;
     }
-    
     .activity-item:hover {
         background:  hsla(254, 30%, 30%, 1.00);
         transform: translateX(5px);
     }
-    
     .activity-icon {
         width: 46px;
         height: 46px;
@@ -454,12 +404,7 @@ function formatActivityDescription($description) {
         justify-content: center;
         color: white;
     }
-    
-    .activity-icon svg {
-        width: 22px;
-        height: 22px;
-    }
-    
+    .activity-icon svg { width: 22px; height: 22px; }
     .activity-content {
         flex: 1;
         display: flex;
@@ -467,21 +412,18 @@ function formatActivityDescription($description) {
         justify-content: center;    
         min-height: 48px;
     }
-    
     .activity-type {
         font-weight: 600;
         color: #ffffffff;
         font-size: 15px;
         margin-bottom: 4px;
     }
-    
     .activity-description {
         font-size: 13px;
         color: #bcbcbcff;
         line-height: 1.5;
         margin-bottom: 6px;
     }
-    
     .activity-time {
         font-size: 12px;
         color: #bcbcbcff;
@@ -489,8 +431,6 @@ function formatActivityDescription($description) {
         align-items: center;
         gap: 5px;
     }
-    
-    /* Buttons */
     .logout-btn, .delete-btn { 
         padding: 16px 20px;
         border-radius: 16px;
@@ -508,169 +448,58 @@ function formatActivityDescription($description) {
         justify-content: center;
         gap: 10px;
     }
-    
     .logout-btn {
         background: rgba(255, 255, 255, 0.2);
         color: white;
         border: 2px solid rgba(255, 255, 255, 0.3);
         backdrop-filter: blur(10px);
     }
-    
     .logout-btn:hover { 
         background: rgba(255, 255, 255, 0.3); 
         transform: translateY(-2px);
         box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
     }
-    
     .delete-btn {
         background: rgba(255, 77, 79, 0.9);
         color: white;
         border: 2px solid rgba(255, 77, 79, 0.3);
         backdrop-filter: blur(10px);
     }
-    
     .delete-btn:hover { 
         background: rgba(255, 77, 79, 1); 
         transform: translateY(-2px);
         box-shadow: 0 10px 25px rgba(255, 77, 79, 0.2);
     }
-    
-    /* Messages */
     .error-message { 
-        background: #fff2f0; 
-        border: 1px solid #ffccc7; 
-        color: #cf1322; 
-        padding: 12px 16px; 
-        border-radius: 8px; 
-        margin-bottom: 20px; 
-        font-size: 14px;
+        background: #fff2f0; border: 1px solid #ffccc7; color: #cf1322; 
+        padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; font-size: 14px;
     }
-    
-    .success-message { 
-        background: #f6ffed; 
-        border: 1px solid #b7eb8f; 
-        color: #52c41a; 
-        padding: 12px 16px; 
-        border-radius: 8px; 
-        margin-bottom: 20px; 
-        font-size: 14px;
-    }
-    
     .info-message {
-        background: #e6f7ff;
-        border: 1px solid #91d5ff;
-        color: #096dd9;
-        padding: 12px 16px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        font-size: 14px;
+        background: #e6f7ff; border: 1px solid #91d5ff; color: #096dd9;
+        padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; font-size: 14px;
     }
-    
-    /* Empty States */
     .no-items { 
-        text-align: center; 
-        padding: 60px 20px; 
-        color: #999; 
-        font-style: italic;
-        background: #fafafa;
-        border-radius: 12px;
-        margin: 20px 0;
+        text-align: center; padding: 60px 20px; color: #999; 
+        font-style: italic; background: #fafafa; border-radius: 12px; margin: 20px 0;
     }
-    
-    .no-items h3 {
-        color: #666;
-        margin-bottom: 10px;
-        font-weight: 500;
-    }
-    
+    .no-items h3 { color: #666; margin-bottom: 10px; font-weight: 500; }
     .dashboard-link {
-        display: inline-block;
-        margin-top: 15px;
-        padding: 10px 20px;
-        background: #a546ff;
-        color: white;
-        text-decoration: none;
-        border-radius: 10px;
-        font-weight: 600;
-        transition: all 0.3s ease;
+        display: inline-block; margin-top: 15px; padding: 10px 20px;
+        background: #a546ff; color: white; text-decoration: none;
+        border-radius: 10px; font-weight: 600; transition: all 0.3s ease;
     }
-    
-    .dashboard-link:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-    }
-
-    .header-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      flex-shrink: 0;
-    }
-
-    .site-header .user-avatar{
-      width: 40px;
-      height: 40px;
-      font-size: 20px;
-    }
-    
-    /* Responsive */
-    @media (max-width: 768px) {
-        .profile-header-card {
-            width: 100%;
-            padding: 40px 30px;
-            flex-wrap: wrap;
-        }
-        
-        .user-avatar {
-            width: 80px;
-            height: 80px;
-            font-size: 32px;
-        }
-        
-        .user-name {
-            font-size: 28px;
-        }
-        
-        .stats-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-        
-        .header-actions {
-          width: 100%;                   
-          flex-direction: row;
-          gap: 12px;
-        }
-        
-        .logout-btn, .delete-btn {
-          flex: 1;
-          padding: 16px 20px;
-          height: 56px;
-        }
-    }
+    .dashboard-link:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3); }
+    .header-actions { display: flex; flex-direction: column; gap: 14px; flex-shrink: 0; }
+    .site-header .user-avatar { width: 40px; height: 40px; font-size: 20px; }
     
     @media (max-width: 768px) {
-        .user-avatar {
-            width: 100px;
-            height: 100px;
-            font-size: 46px;
-        }
-
-        .user-name {
-            font-size: 32px;
-        }
-
-        .stats-grid {
-            grid-template-columns: 1fr;
-        }
-        
-        .header-actions {
-            flex-direction: column;
-        }
-
-        .user-meta {
-            flex-direction: column;
-            gap: 10px;
-        }
+        .profile-header-card { width: 100%; padding: 40px 30px; flex-wrap: wrap; }
+        .user-avatar { width: 100px; height: 100px; font-size: 46px; }
+        .user-name { font-size: 32px; }
+        .stats-grid { grid-template-columns: 1fr; }
+        .header-actions { flex-direction: column; width: 100%; gap: 12px; }
+        .user-meta { flex-direction: column; gap: 10px; }
+        .logout-btn, .delete-btn { flex: 1; padding: 16px 20px; height: 56px; }
     }
   </style>
 </head>
@@ -697,12 +526,7 @@ function formatActivityDescription($description) {
         <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
       <?php endif; ?>
       
-      <?php if(isset($_GET['deleted'])): ?>
-        <div class="success-message">Your account has been deleted successfully.</div>
-      <?php endif; ?>
-      
-    <!-- Enhanced Profile Header – NEW LAYOUT -->
-<div class="profile-header-card">
+      <div class="profile-header-card">
         <div class="profile-info">
             <div class="user-avatar">
                 <?php echo strtoupper(substr($username, 0, 1)); ?>
@@ -741,10 +565,10 @@ function formatActivityDescription($description) {
                 </button>
             </form>
 
-            <form id="delete-user-form" method="POST" onsubmit="return confirmDelete();">
+            <form id="delete-user-form" method="POST">
                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                 <input type="hidden" name="delete_account" value="1">
-                <button type="submit" class="delete-btn">
+                <button type="submit" class="delete-btn" onclick="return confirmDelete()">
                     <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
                         <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
@@ -753,7 +577,7 @@ function formatActivityDescription($description) {
                 </button>
             </form>
         </div>
-    </div>
+      </div>
 
       <!-- Stats Grid -->
       <div class="stats-grid">
@@ -839,7 +663,6 @@ function formatActivityDescription($description) {
           <ul class="activity">
             <?php foreach ($recent_activity as $act): ?>
               <?php 
-                // Get icon based on action type
                 $icon = '';
                 switch($act['action_type']) {
                     case 'add_to_watchlist':

@@ -62,5 +62,17 @@
     </div>
   </div>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('deleted') === '1') {
+        alert('Your account has been successfully deleted.');
+        
+        // Remove the query parameter without refreshing the page
+        const newUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, newUrl);
+      }
+    });
+  </script>
 </body>
 </html>

@@ -179,7 +179,9 @@ function initWatchlistFilters() {
   });
 }
 
+
 function deleteFromCard(event, id) {
+  
   event.stopPropagation();
   if (!confirm("Remove this from your library?")) return;
 

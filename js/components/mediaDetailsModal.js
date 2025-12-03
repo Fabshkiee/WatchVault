@@ -1,4 +1,4 @@
-/* Media Details Modal */
+/* Media Details Modal Logic */
 
 let currentMediaDetails = null;
 let currentRating = 0;
@@ -9,7 +9,8 @@ let tempRating = 0;
 
 async function openMediaDetails(mediaData) {
   let tmdbDetails = null;
-  // Fetch extra details if we have a TMDB ID
+  
+  // Fetch extra details from TMDB if available
   if (mediaData.tmdb_id) {
     try {
       const resp = await fetch(`../php/api/get_tmdb_details.php?id=${encodeURIComponent(mediaData.tmdb_id)}&type=${encodeURIComponent(mediaData.type || 'movie')}`);
@@ -22,7 +23,7 @@ async function openMediaDetails(mediaData) {
     }
   }
 
-  // Merge existing data with fetched details
+  // Merge details
   const details = Object.assign({}, mediaData);
   if (tmdbDetails) {
     details.overview = tmdbDetails.overview || details.overview;
@@ -34,20 +35,33 @@ async function openMediaDetails(mediaData) {
     details.tmdb_vote_count = tmdbDetails.vote_count || null;
   }
 
+  // State Setup
   modalMediaDetails = details;
-  // Convert DB rating (0-10) to Star rating (0-5)
   currentRating = details.rating ? (details.rating / 2) : 0;
   modalStatus = details.status || 'wantToWatch';
   currentStatusModal = modalStatus;
   currentMediaDetails = details;
 
+  // --- BAD FETCH HANDLERS ---
+  const posterSrc = details.poster 
+    ? `https://image.tmdb.org/t/p/original${details.poster}` 
+    : '../assets/no-poster.png';
+
+  const backdropSrc = details.backdrop 
+    ? `https://image.tmdb.org/t/p/original${details.backdrop}` 
+    : posterSrc;
+
+  const overviewText = details.overview || "No description available for this title.";
+  const titleText = details.title || "Unknown Title";
+
+  // Generate HTML
   const container = document.getElementById('media-details-container');
 
   const genreHTML = (details.genres && details.genres.length)
     ? details.genres.slice(0, 5).map(g => `<span class="genre-tag">${escapeHtml(g.name || g)}</span>`).join('')
     : '';
 
-  const year = details.release_date ? new Date(details.release_date).getFullYear() : '';
+  const year = details.release_date ? new Date(details.release_date).getFullYear() : 'N/A';
   const tmdbRatingVal = details.tmdb_rating ? Number(details.tmdb_rating).toFixed(1) : '';
   const tmdbCount = details.tmdb_vote_count ? `(${details.tmdb_vote_count.toLocaleString()})` : '';
 
@@ -71,30 +85,23 @@ async function openMediaDetails(mediaData) {
         </svg>
       </button>
 
-      <img src="${details.backdrop ? `https://image.tmdb.org/t/p/original${details.backdrop}` : details.poster ? `https://image.tmdb.org/t/p/original${details.poster}` : '../../assets/no-poster.png'}"
-           alt="${escapeHtml(details.title)}"
+      <img src="${backdropSrc}"
+           alt="${escapeHtml(titleText)}"
            class="media-backdrop"
-           onerror="this.src='../../assets/no-poster.png'" />
+           onerror="this.src='../assets/no-poster.png'" />
 
       <div class="media-details-content">
         <div class="media-title-section">
-          <h1 class="media-title">${escapeHtml(details.title)}</h1>
-
-          <div class="media-meta-primary">
-            ${metaPrimaryHTML}
-          </div>
-
-          <div class="media-genres">
-            ${genreHTML}
-          </div>
+          <h1 class="media-title">${escapeHtml(titleText)}</h1>
+          <div class="media-meta-primary">${metaPrimaryHTML}</div>
+          <div class="media-genres">${genreHTML}</div>
         </div>
 
         <p class="media-description">
-          ${escapeHtml(details.overview || 'No description available.')}
+          ${escapeHtml(overviewText)}
         </p>
 
         <div class="media-bottom-row">
-
           <!-- Left Side: Finished/Rating Section -->
           <div class="finished-status-section ${modalStatus === 'finished' ? 'active' : ''}" id="finished-status-section">
             <div class="rating-section">
@@ -104,12 +111,9 @@ async function openMediaDetails(mediaData) {
                 <span id="rating-text-score" class="rating-text-score"></span>
               </div>
             </div>
-
             <div class="review-section">
               <label class="review-label">Review</label>
-              <textarea class="review-textarea"
-                        id="review-textarea"
-                        placeholder="Share your thoughts...">${details.review || ''}</textarea>
+              <textarea class="review-textarea" id="review-textarea" placeholder="Share your thoughts...">${details.review || ''}</textarea>
             </div>
           </div>
 
@@ -122,7 +126,6 @@ async function openMediaDetails(mediaData) {
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-
               <div class="status-dropdown-menu" id="status-dropdown-menu">
                 <div class="status-option ${modalStatus === 'wantToWatch' ? 'selected' : ''}" onclick="selectStatus('wantToWatch')">
                   Want to watch
@@ -140,7 +143,6 @@ async function openMediaDetails(mediaData) {
               ${details.id ? 'Update My List' : 'Add to My List'}
             </button>
           </div>
-
         </div>
       </div>
     </div>
@@ -171,14 +173,13 @@ function selectStatus(status) {
   modalStatus = status;
   currentStatusModal = status;
   document.getElementById('selected-status-text').textContent = formatStatus(status);
-
   document.querySelectorAll('.status-option').forEach(opt => opt.classList.remove('selected'));
   event.target.classList.add('selected');
-
+  
   const finishedSection = document.getElementById('finished-status-section');
   if (status === 'finished') finishedSection.classList.add('active');
   else finishedSection.classList.remove('active');
-
+  
   toggleStatusDropdown();
 }
 
@@ -192,7 +193,6 @@ function generateStarsStructure() {
 
 function initializeStarRating() {
   const stars = document.querySelectorAll('.star');
-  // Update visuals immediately based on currentRating
   updateStarVisuals(currentRating);
 
   stars.forEach(star => {
@@ -200,9 +200,7 @@ function initializeStarRating() {
       const rect = this.getBoundingClientRect();
       const starIndex = parseInt(this.dataset.index);
       const isHalf = (e.clientX - rect.left) < (rect.width / 2);
-
       tempRating = isHalf ? starIndex - 0.5 : starIndex;
-
       updateStarVisuals(tempRating);
       currentRating = tempRating;
     });
@@ -222,10 +220,8 @@ function updateStarVisuals(rating) {
 
   stars.forEach((star, index) => {
     const starVal = index + 1;
-
     star.style.fill = 'rgba(255, 255, 255, 0.2)';
     star.style.color = 'rgba(255, 255, 255, 0.2)';
-
     if (rating >= starVal) {
       star.style.color = '#a546ff';
       star.style.fill = 'currentColor';
@@ -238,6 +234,7 @@ function updateStarVisuals(rating) {
   });
 }
 
+// --- FIXED FUNCTION ---
 async function saveMediaDetails() {
   const review = document.getElementById('review-textarea')?.value || '';
   const dataToSave = {
@@ -246,38 +243,41 @@ async function saveMediaDetails() {
     rating: currentStatusModal === 'finished' ? currentRating * 2 : null,
     review: currentStatusModal === 'finished' ? review : ''
   };
+  
   try {
     const endpoint = currentMediaDetails.id ? "../php/api/update_media.php" : "../php/api/add_media.php";
-    const res = await fetch(endpoint, {
-      method: "POST", body: JSON.stringify(dataToSave)
+    
+    // Fix: Changed variable from 'res' to 'response' to match the next line
+    const response = await fetch(endpoint, {
+      method: "POST", 
+      body: JSON.stringify(dataToSave)
     });
-    const data = await res.json();
     
-    // FIX: Only call loadWatchlist if it exists (it doesn't exist on search page)
-    if (typeof loadWatchlist === 'function') {
-        loadWatchlist();
-    }
+    const data = await response.json();
     
-    // Show toast message from server response
     if (data.success) {
         showToast(data.message);
         closeMediaDetails();
+        
+        // Fix: Guard check for loadWatchlist so it doesn't crash on Search Page
+        if (typeof loadWatchlist === 'function') {
+            loadWatchlist();
+        }
     } else {
         showToast(data.message || "Error saving");
     }
-    
   } catch (error) {
-    console.error(error);
+    console.error("Save Error:", error);
     showToast("An error occurred while saving.");
   }
 }
 
-// Click listener for watchlist cards
+// Global click listener
 document.addEventListener('click', function (e) {
   const card = e.target.closest('.watchlist-media-card');
   if (card) {
     openMediaDetails({
-      id: parseInt(card.dataset.id), // NaN if search result
+      id: parseInt(card.dataset.id) || null, 
       tmdb_id: parseInt(card.dataset.tmdbId),
       title: card.dataset.title,
       poster: card.dataset.poster,
