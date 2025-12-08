@@ -30,7 +30,7 @@
 .modal-close-btn {
   position: fixed;
   top: 1rem;
-  right: 26rem;
+  right: 21rem;
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
@@ -205,8 +205,8 @@
 /* --- BOTTOM ROW LAYOUT (The Key Logic) --- */
 .media-bottom-row {
   display: flex;
-  justify-content: flex-end; /* This pushes actions to the right by default */
-  align-items: flex-end;     /* Align bottom so buttons align with bottom of review box */
+  justify-content: flex-end; 
+  align-items: flex-end;     
   gap: 2rem;
   width: 100%;
 }
@@ -303,14 +303,14 @@
   font-weight: 600;
 }
 
-/* FINISHED SECTION (Left Side - Filling the Gap) */
+/* FINISHED SECTION */
 .finished-status-section {
   display: none;
   background: rgba(255, 255, 255, 0.03);
   border-radius: 12px;
   padding: 1.5rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  flex: 1; /* KEY: This makes it expand to fill the left gap */
+  flex: 1; 
   max-width: 100%;
 }
 

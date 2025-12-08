@@ -429,7 +429,7 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background: linear-gradient(135deg, #a546ff, #c88cff);
+  background: var(--primary);
   color: white;
   padding: 12px 24px;
   border-radius: 8px;

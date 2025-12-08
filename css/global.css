@@ -9,33 +9,23 @@
   --background: hsl(255, 31%, 13%);
   --foreground: hsl(240, 11%, 97%);
   --card: hsl(255, 31%, 18%);
-  --card-foreground: hsl(240, 11%, 97%);
   --primary: hsl(267, 72%, 59%);
   --primary-foreground: hsl(240, 11%, 97%);
   --secondary: hsl(267, 20%, 73%);
   --secondary-foreground: hsl(255, 31%, 13%);
   --muted: hsl(255, 31%, 20%);
   --muted-foreground: hsl(267, 20%, 73%);
-  --accent: hsl(270, 92%, 58%);
-  --accent-foreground: hsl(240, 11%, 97%);
-  --destructive: hsl(0, 84%, 60%);
-  --destructive-foreground: hsl(240, 11%, 97%);
   --border: hsl(255, 31%, 25%);
-  --input: hsl(255, 31%, 20%);
   --ring: hsl(267, 72%, 59%);
-  --radius: 1rem;
   
   /* Gradients */
   --gradient-primary: linear-gradient(135deg, hsl(270, 92%, 58%), hsl(323, 88%, 49%));
-  --gradient-card: linear-gradient(145deg, hsla(255, 31%, 18%, 0.8), hsla(267, 72%, 20%, 0.6));
   
   /* Glass effect */
-  --glass-bg: hsla(255, 31%, 18%, 0.4);
   --glass-border: hsla(267, 72%, 59%, 0.2);
   
   /* Glow effects */
   --glow-primary: 0 0 20px hsla(267, 72%, 59%, 0.4);
-  --glow-accent: 0 0 30px hsla(323, 88%, 49%, 0.3);
   
   /* Transitions */
   --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -67,7 +57,6 @@ body {
   background-attachment: fixed;
   color: hsl(var(--foreground));
   min-height: 100vh;
-  /* FIX: Horizontal Scroll Issue caused by wide lightbar */
   overflow-x: hidden; 
 }
 

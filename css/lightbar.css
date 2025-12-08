@@ -16,7 +16,6 @@
     -webkit-user-select: none;
     user-select: none;
     top: 38px;
-    /* CHANGED: Set to 0 to sit behind content */
     z-index: 0; 
     overflow: hidden;
 }
@@ -44,7 +43,6 @@
     --d: 3s;
     --animation: cubic-bezier(.75, -0, .25, 1);
     animation: boot var(--d) var(--animation) forwards;
-    /* CHANGED: Explicitly set to 0 to avoid covering text */
     z-index: 0;
 }
 
@@ -65,7 +63,6 @@
     transform-origin: center center;
     background-repeat: no-repeat;
     animation: lightbarBoot var(--d) var(--animation) forwards;
-    /* CHANGED: Explicitly set to 0 */
     z-index: 0;
 }
 
@@ -74,7 +71,6 @@
     height: 300px;
     transform: translateY(-250px);
     position: relative; 
-    /* CHANGED: Lowered from 2 to 0 */
     z-index: 0; 
 }
 
